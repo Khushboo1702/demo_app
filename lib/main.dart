@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:badges/badges.dart';
 import 'package:demoapp/cart_provider.dart';
+import 'package:demoapp/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:demoapp/data.dart';
@@ -19,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   //for UI
   late Future<List<Data>> futureData;
   //for db storage
-  DBhelper dbHelper = DBhelper();
+  DBhelper? dbHelper = DBhelper();
 
   @override
   void initState() {
@@ -42,21 +43,27 @@ class _MyAppState extends State<MyApp> {
               style: TextStyle(color: Colors.black),
             ),
             actions: [
-              Center(
-                  child: Badge(
-                badgeContent: Consumer<CartProvider>(
-                  builder: ((context, value, child) {
-                    return Text(
-                      value.getCounter().toString(),
-                      style: TextStyle(color: Colors.white),
-                    );
-                  }),
-                ),
-                child: const Icon(
-                  Icons.shopping_cart_sharp,
-                  color: Colors.black,
-                ),
-              )),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CartScreen()));
+                },
+                child: Center(
+                    child: Badge(
+                  badgeContent: Consumer<CartProvider>(
+                    builder: ((context, value, child) {
+                      return Text(
+                        value.getCounter().toString(),
+                        style: TextStyle(color: Colors.white),
+                      );
+                    }),
+                  ),
+                  child: const Icon(
+                    Icons.shopping_cart_sharp,
+                    color: Colors.black,
+                  ),
+                )),
+              ),
               const SizedBox(width: 20.0)
             ],
           ),
@@ -127,16 +134,18 @@ class _MyAppState extends State<MyApp> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        data[index].title,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 16),
+                                      Expanded(
+                                        child: Text(
+                                          data[index].title,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
                                       ),
                                       // SizedBox(20),
                                       RawMaterialButton(
                                         onPressed: () {
-                                          dbHelper
+                                          dbHelper!
                                               .insert(Data(
                                             userId: data[index].userId,
                                             id: index,
