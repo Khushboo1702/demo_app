@@ -1,14 +1,22 @@
 import 'dart:async';
-import 'package:badges/badges.dart';
 import 'package:demoapp/cart_addition.dart';
 import 'package:demoapp/cart_provider.dart';
-import 'package:demoapp/cart_screen.dart';
+import 'package:demoapp/login.dart';
+import 'package:demoapp/register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:demoapp/data.dart';
 import 'package:demoapp/db_helper.dart';
 
-void main() => runApp(MyApp());
+void main() => MyApp();
+// runApp(MaterialApp(
+//   debugShowCheckedModeBanner: false,
+//   home: MyLogin(),
+//   routes: {
+//     'register': (context) => MyRegister(),
+//     'login': (context) => MyLogin(),
+//   },
+// ));
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -18,9 +26,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  //for UI
   late Future<List<Data>> futureData;
-  //for db storage
   DBhelper? dbHelper = DBhelper();
 
   @override

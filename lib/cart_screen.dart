@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:demoapp/cart_provider.dart';
+import 'package:demoapp/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  DBhelper? dBhelper = DBhelper();
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
@@ -58,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       title: Text(
-                                        snapshot.data![index].title,
+                                        snapshot.data![index].title.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 16),
@@ -70,8 +72,10 @@ class _CartScreenState extends State<CartScreen> {
                                           child: const Text("Add To Cart"),
                                         ),
                                         TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
+                                          onPressed: () {
+                                            dBhelper!.delete(
+                                                snapshot.data![index].id);
+                                          },
                                           child: const Text("Delete From Cart"),
                                         ),
                                       ],
@@ -83,7 +87,7 @@ class _CartScreenState extends State<CartScreen> {
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       title: Text(
-                                        snapshot.data![index].title,
+                                        snapshot.data![index].title.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 16),
@@ -95,8 +99,10 @@ class _CartScreenState extends State<CartScreen> {
                                           child: const Text("Add To Cart"),
                                         ),
                                         TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
+                                          onPressed: () {
+                                            dBhelper!.delete(
+                                                snapshot.data![index].id);
+                                          },
                                           child: const Text("Delete From Cart"),
                                         ),
                                       ],
@@ -112,11 +118,14 @@ class _CartScreenState extends State<CartScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              snapshot.data![index].title,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 16),
+                                            Expanded(
+                                              child: Text(
+                                                snapshot.data![index].title
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 16),
+                                              ),
                                             ),
                                             // SizedBox(20),
                                             RawMaterialButton(
@@ -140,7 +149,7 @@ class _CartScreenState extends State<CartScreen> {
                               );
                             }));
                   }
-                  return Text('');
+                  return const CircularProgressIndicator();
                 })
           ],
         ));

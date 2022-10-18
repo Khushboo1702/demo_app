@@ -6,6 +6,7 @@ class Data {
   final int userId;
   final int id;
   final String title;
+  //final int uniqueId = 0;
 
   Data({required this.userId, required this.id, required this.title});
 
@@ -18,6 +19,7 @@ class Data {
       'userId': userId,
       'id': id,
       'title': title,
+      // 'uniqueId': uniqueId,
     };
   }
 }

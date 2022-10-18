@@ -97,11 +97,27 @@ class _MyWidgetState extends State<MyWidget> {
                             ),
                             actions: [
                               TextButton(
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () {
+                                  widget.dbHelper!
+                                      .insert(Data(
+                                    userId: data[index].userId,
+                                    id: index,
+                                    title: data[index].title.toString(),
+                                  ))
+                                      .then((value) {
+                                    print('product is added to cart');
+                                    context
+                                        .read<CartProvider>()
+                                        .addtotal(double.parse('1'));
+                                    context.read<CartProvider>().addCounter();
+                                  }).onError((error, stackTrace) {
+                                    print(error.toString());
+                                  });
+                                },
                                 child: const Text("Add To Cart"),
                               ),
                               TextButton(
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () {},
                                 child: const Text("Delete From Cart"),
                               ),
                             ],
@@ -132,7 +148,7 @@ class _MyWidgetState extends State<MyWidget> {
                                           .insert(Data(
                                         userId: data[index].userId,
                                         id: index,
-                                        title: data[index].toString(),
+                                        title: data[index].title.toString(),
                                       ))
                                           .then((value) {
                                         print('product is added to cart');
