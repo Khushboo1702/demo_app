@@ -30,10 +30,10 @@ class DBhelper {
   }
 
   Future<Data> insert(Data cart) async {
-    print(cart.toMap());
+    print(cart.toMap(uniqueId));
     var dbClient = await db;
     uniqueId++;
-    await dbClient!.insert('cart', cart.toMap());
+    await dbClient!.insert('cart', cart.toMap(uniqueId));
     return cart;
   }
 
