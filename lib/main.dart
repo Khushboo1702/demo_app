@@ -8,7 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:demoapp/data.dart';
 import 'package:demoapp/db_helper.dart';
 
-void main() => MyApp();
+void main() => runApp(
+      Login(),
+    );
+
 // runApp(MaterialApp(
 //   debugShowCheckedModeBanner: false,
 //   home: MyLogin(),

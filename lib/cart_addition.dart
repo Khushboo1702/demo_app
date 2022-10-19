@@ -75,7 +75,26 @@ class _MyWidgetState extends State<MyWidget> {
                             ),
                             actions: [
                               TextButton(
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () {
+                                  widget.dbHelper!
+                                      .insert(Data(
+                                    userId: data[index].userId,
+                                    id: index,
+                                    title: data[index].title.toString(),
+                                    quantity: 1,
+                                    //uniqueId: data[index].uniqueId,
+                                  ))
+                                      .then((value) {
+                                    print('product is added to cart');
+                                    context
+                                        .read<CartProvider>()
+                                        .addtotal(double.parse('1'));
+                                    context.read<CartProvider>().addCounter();
+                                  }).onError((error, stackTrace) {
+                                    print(error.toString());
+                                  });
+                                  Navigator.pop(context);
+                                },
                                 child: const Text("Add To Cart"),
                               ),
                               TextButton(
@@ -103,6 +122,8 @@ class _MyWidgetState extends State<MyWidget> {
                                     userId: data[index].userId,
                                     id: index,
                                     title: data[index].title.toString(),
+                                    quantity: 1,
+                                    //uniqueId: data[index].uniqueId,
                                   ))
                                       .then((value) {
                                     print('product is added to cart');
@@ -113,6 +134,7 @@ class _MyWidgetState extends State<MyWidget> {
                                   }).onError((error, stackTrace) {
                                     print(error.toString());
                                   });
+                                  Navigator.pop(context);
                                 },
                                 child: const Text("Add To Cart"),
                               ),
@@ -149,6 +171,8 @@ class _MyWidgetState extends State<MyWidget> {
                                         userId: data[index].userId,
                                         id: index,
                                         title: data[index].title.toString(),
+                                        quantity: 1,
+                                        //uniqueId: data[index].uniqueId,
                                       ))
                                           .then((value) {
                                         print('product is added to cart');

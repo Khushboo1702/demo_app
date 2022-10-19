@@ -6,7 +6,7 @@ import 'package:demoapp/data.dart';
 
 class DBhelper {
   static Database? _db;
-  int uniqueId = 0;
+  //int uniqueId = 0;
 
   Future<Database?> get db async {
     if (_db != null) {
@@ -25,15 +25,16 @@ class DBhelper {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-      'CREATE TABLE cart (userId INTEGER, id INTEGER, title VARCHAR, uniqueId INTEGER PRIMARY KEY)',
+      'CREATE TABLE cart (userId INTEGER, id INTEGER PRIMARY KEY, title TEXT, quantity INTEGER)',
     );
   }
 
   Future<Data> insert(Data cart) async {
-    print(cart.toMap(uniqueId));
+    print(cart.toMap());
+
     var dbClient = await db;
-    uniqueId++;
-    await dbClient!.insert('cart', cart.toMap(uniqueId));
+    //uniqueId++;
+    await dbClient!.insert('cart', cart.toMap());
     return cart;
   }
 
@@ -51,5 +52,11 @@ class DBhelper {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<int> updateQuantity(Data cart) async {
+    var dbClient = await db;
+    return await dbClient!
+        .update('cart', cart.toMap(), where: 'id = ?', whereArgs: [cart.id]);
   }
 }
