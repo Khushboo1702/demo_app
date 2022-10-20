@@ -86,10 +86,10 @@ class _MyWidgetState extends State<MyWidget> {
                                   ))
                                       .then((value) {
                                     print('product is added to cart');
-                                    context
-                                        .read<CartProvider>()
-                                        .addtotal(double.parse('1'));
-                                    context.read<CartProvider>().addCounter();
+                                    // context
+                                    //     .read<CartProvider>()
+                                    //     .addtotal(double.parse('1'));
+                                    // context.read<CartProvider>().addCounter();
                                   }).onError((error, stackTrace) {
                                     print(error.toString());
                                   });
@@ -127,9 +127,9 @@ class _MyWidgetState extends State<MyWidget> {
                                   ))
                                       .then((value) {
                                     print('product is added to cart');
-                                    context
-                                        .read<CartProvider>()
-                                        .addtotal(double.parse('1'));
+                                    // context
+                                    //     .read<CartProvider>()
+                                    //     .addtotal(double.parse('1'));
                                     context.read<CartProvider>().addCounter();
                                   }).onError((error, stackTrace) {
                                     print(error.toString());
@@ -176,9 +176,9 @@ class _MyWidgetState extends State<MyWidget> {
                                       ))
                                           .then((value) {
                                         print('product is added to cart');
-                                        context
-                                            .read<CartProvider>()
-                                            .addtotal(double.parse('1'));
+                                        // context
+                                        //     .read<CartProvider>()
+                                        //     .addtotal(double.parse('1'));
                                         context
                                             .read<CartProvider>()
                                             .addCounter();
