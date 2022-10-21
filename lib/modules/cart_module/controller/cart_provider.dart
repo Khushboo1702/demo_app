@@ -1,5 +1,5 @@
-import 'package:demoapp/data.dart';
-import 'package:demoapp/db_helper.dart';
+import 'package:demoapp/modules/cart_module/data/data.dart';
+import 'package:demoapp/services/db_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

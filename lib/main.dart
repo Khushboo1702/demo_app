@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:demoapp/cart_addition.dart';
-import 'package:demoapp/cart_provider.dart';
-import 'package:demoapp/login.dart';
-import 'package:demoapp/register.dart';
+import 'package:demoapp/modules/cart_module/ui/cart_addition.dart';
+import 'package:demoapp/modules/cart_module/controller/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:demoapp/data.dart';
-import 'package:demoapp/db_helper.dart';
+import 'package:demoapp/modules/cart_module/data/data.dart';
+import 'package:demoapp/services/db_helper.dart';
+
+import 'modules/authentication/login/login.dart';
 
 void main() => runApp(
       Login(),
@@ -17,7 +17,7 @@ void main() => runApp(
 //   home: MyLogin(),
 //   routes: {
 //     'register': (context) => MyRegister(),
-//     'login': (context) => MyLogin(),
+//     'authentication': (context) => MyLogin(),
 //   },
 // ));
 

@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
-import 'package:demoapp/data.dart';
+import 'package:demoapp/modules/cart_module/data/data.dart';
 
 class DBhelper {
   static Database? _db;

@@ -1,11 +1,11 @@
 import 'package:badges/badges.dart';
-import 'package:demoapp/cart_provider.dart';
+import 'package:demoapp/modules/cart_module/controller/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../data/data.dart';
+import '../../../services/db_helper.dart';
 import 'cart_screen.dart';
-import 'data.dart';
-import 'db_helper.dart';
 
 class MyWidget extends StatefulWidget {
   const MyWidget({super.key, required this.futureData, required this.dbHelper});

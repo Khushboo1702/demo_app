@@ -1,10 +1,9 @@
 import 'package:badges/badges.dart';
-import 'package:demoapp/cart_provider.dart';
-import 'package:demoapp/db_helper.dart';
+import 'package:demoapp/modules/cart_module/controller/cart_provider.dart';
+import 'package:demoapp/modules/cart_module/data/data.dart';
+import 'package:demoapp/services/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'data.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -15,6 +14,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   DBhelper? dBhelper = DBhelper();
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
@@ -118,9 +118,9 @@ class _CartScreenState extends State<CartScreen> {
                                                   InkWell(
                                                       onTap: () {
                                                         dBhelper!.delete(
-                                                            snapshot
-                                                                .data![index]
-                                                                .id!);
+                                                          snapshot
+                                                              .data![index].id,
+                                                        );
                                                         cart.removeCounter();
                                                       },
                                                       child: Icon(Icons.delete))
@@ -167,7 +167,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                         dBhelper!
                                                                             .updateQuantity(
                                                                           Data(
-                                                                            id: snapshot.data![index].id!,
+                                                                            id: snapshot.data![index].id,
                                                                             userId:
                                                                                 snapshot.data![index].userId,
                                                                             title:
@@ -229,7 +229,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                                 Data(
                                                                           id: snapshot
                                                                               .data![index]
-                                                                              .id!,
+                                                                              .id,
                                                                           userId: snapshot
                                                                               .data![index]
                                                                               .userId,
