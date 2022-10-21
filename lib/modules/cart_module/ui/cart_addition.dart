@@ -8,11 +8,18 @@ import '../../../services/db_helper.dart';
 import 'cart_screen.dart';
 
 class MyWidget extends StatefulWidget {
-  const MyWidget({super.key, required this.futureData, required this.dbHelper});
+  const MyWidget({
+    super.key,
+    required this.data,
+    required this.dbHelper,
+  });
+
 //for UI
-  final Future<List<Data>> futureData;
+  final List<Data> data;
+
   //for db storage
   final DBhelper? dbHelper;
+
   @override
   State<MyWidget> createState() => _MyWidgetState();
 }
@@ -53,163 +60,86 @@ class _MyWidgetState extends State<MyWidget> {
         ],
       ),
       body: Center(
-        child: FutureBuilder<List<Data>>(
-          future: widget.futureData,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Data>? data = snapshot.data;
-
-              //list of products
-              return ListView.builder(
-                  itemCount: data!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(
-                              data[index].title,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 16),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  widget.dbHelper!
-                                      .insert(Data(
-                                    userId: data[index].userId,
-                                    id: index,
-                                    title: data[index].title.toString(),
-                                    quantity: 1,
-                                    //uniqueId: data[index].uniqueId,
-                                  ))
-                                      .then((value) {
-                                    print('product is added to cart');
-                                    // context
-                                    //     .read<CartProvider>()
-                                    //     .addtotal(double.parse('1'));
-                                    // context.read<CartProvider>().addCounter();
-                                  }).onError((error, stackTrace) {
-                                    print(error.toString());
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Add To Cart"),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text("Delete From Cart"),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(
-                              data[index].title,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 16),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  widget.dbHelper!
-                                      .insert(Data(
-                                    userId: data[index].userId,
-                                    id: index,
-                                    title: data[index].title.toString(),
-                                    quantity: 1,
-                                    //uniqueId: data[index].uniqueId,
-                                  ))
-                                      .then((value) {
-                                    print('product is added to cart');
-                                    // context
-                                    //     .read<CartProvider>()
-                                    //     .addtotal(double.parse('1'));
-                                    context.read<CartProvider>().addCounter();
-                                  }).onError((error, stackTrace) {
-                                    print(error.toString());
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Add To Cart"),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text("Delete From Cart"),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(25),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      data[index].title,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                  // SizedBox(20),
-                                  RawMaterialButton(
-                                    onPressed: () {
-                                      widget.dbHelper!
-                                          .insert(Data(
-                                        userId: data[index].userId,
-                                        id: index,
-                                        title: data[index].title.toString(),
-                                        quantity: 1,
-                                        //uniqueId: data[index].uniqueId,
-                                      ))
-                                          .then((value) {
-                                        print('product is added to cart');
-                                        // context
-                                        //     .read<CartProvider>()
-                                        //     .addtotal(double.parse('1'));
-                                        context
-                                            .read<CartProvider>()
-                                            .addCounter();
-                                      }).onError((error, stackTrace) {
-                                        print(error.toString());
-                                      });
-                                    },
-                                    elevation: 2.0,
-                                    fillColor: Colors.white,
-                                    padding: const EdgeInsets.all(15.0),
-                                    shape: const CircleBorder(),
-                                    child: const Icon(
-                                      Icons.add,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+        child: ListView.builder(
+            itemCount: widget.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(
+                        widget.data[index].title,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 16),
                       ),
-                    );
-                  });
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            // By default show a loading spinner.
-            return const CircularProgressIndicator();
-          },
-        ),
+                      actions: [
+                        TextButton(
+                          onPressed: () async {
+                            await widget.dbHelper!.insert(Data(
+                              userId: widget.data[index].userId,
+                              id: index,
+                              title: widget.data[index].title.toString(),
+                              quantity: 1,
+                              //uniqueId: widget.data[index].uniqueId,
+                            ));
+                            context.read<CartProvider>().addCounter();
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Add To Cart"),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text("Delete From Cart"),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.data[index].title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16),
+                              ),
+                            ),
+                            // SizedBox(20),
+                            RawMaterialButton(
+                              onPressed: () async {
+                                await widget.dbHelper!.insert(Data(
+                                  userId: widget.data[index].userId,
+                                  id: index,
+                                  title: widget.data[index].title.toString(),
+                                  quantity: 1,
+                                  //uniqueId: widget.data[index].uniqueId,
+                                ));
+                                context.read<CartProvider>().addCounter();
+                              },
+                              elevation: 2.0,
+                              fillColor: Colors.white,
+                              padding: const EdgeInsets.all(15.0),
+                              shape: const CircleBorder(),
+                              child: const Icon(
+                                Icons.add,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
       ),
     );
   }

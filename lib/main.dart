@@ -6,10 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:demoapp/modules/cart_module/data/data.dart';
 import 'package:demoapp/services/db_helper.dart';
 
-import 'modules/authentication/login/login.dart';
-
 void main() => runApp(
-      Login(),
+      const MyApp(),
     );
 
 // runApp(MaterialApp(
@@ -23,32 +21,40 @@ void main() => runApp(
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  late Future<List<Data>> futureData;
   DBhelper? dbHelper = DBhelper();
 
   @override
   void initState() {
     super.initState();
-    futureData = fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => CartProvider(),
+      create: (_) => CartProvider(DBhelper()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'DEMO APP',
-        home: MyWidget(
-          futureData: futureData,
-          dbHelper: dbHelper,
-        ),
+        home: FutureBuilder<List<Data>>(
+            future: fetchData(),
+            builder: (context, dataSnap) {
+              if (dataSnap.hasData && (dataSnap.data ?? []).isNotEmpty) {
+                return MyWidget(
+                  data: dataSnap.data ?? [],
+                  dbHelper: dbHelper,
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
       ),
     );
   }

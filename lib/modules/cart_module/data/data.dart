@@ -38,6 +38,7 @@ class Data {
   }
 }
 
+//(TODO): Don't declare global function
 Future<List<Data>> fetchData() async {
   //int uniqueId = 0;
 

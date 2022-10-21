@@ -5,7 +5,12 @@ import 'dart:io' as io;
 import 'package:demoapp/modules/cart_module/data/data.dart';
 
 class DBhelper {
-  static Database? _db;
+  //(TODO): Make DBhelper singleton rather than SQFlite instance
+  //1)Make DBhelper's constructor private
+  //2)Create a nullable static instance of DBhelper
+  //3)Create a factory constructor to access the above static instance
+
+  Database? _db;
   //int uniqueId = 0;
 
   Future<Database?> get db async {
@@ -13,10 +18,10 @@ class DBhelper {
       return _db!;
     }
     _db = await initDatabase();
-    return null;
+    return _db;
   }
 
-  initDatabase() async {
+  Future<Database?> initDatabase() async {
     io.Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'cart.db');
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
