@@ -1,3 +1,4 @@
+import 'package:demoapp/modules/cart_module/controller/cart_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -10,17 +11,21 @@ class DBhelper {
   //2)Create a nullable static instance of DBhelper
   //3)Create a factory constructor to access the above static instance
 
-  Database? _db;
-  //int uniqueId = 0;
+  //Database? _db;
 
-  Future<Database?> get db async {
-    if (_db != null) {
-      return _db!;
-    }
-    _db = await initDatabase();
+  // Future<Database?> get db async {
+  //   if (_db != null) {
+  //     return _db;
+  //   }
+  //   _db = await initDatabase();
+  //   return _db;
+  // }
+
+  DBhelper._();
+  static DBhelper _db = DBhelper._();
+  factory DBhelper() {
     return _db;
   }
-
   Future<Database?> initDatabase() async {
     io.Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'cart.db');
@@ -37,7 +42,7 @@ class DBhelper {
   Future<Data> insert(Data cart) async {
     print(cart.toMap());
 
-    var dbClient = await db;
+    var dbClient = await initDatabase();
     //uniqueId++;
     await dbClient!.insert('cart', cart.toMap());
     return cart;

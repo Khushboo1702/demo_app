@@ -3,34 +3,26 @@ import 'package:demoapp/services/db_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//TODO: Acting as a controller here
+//Acting as a controller here
 class CartProvider with ChangeNotifier {
-  final DBhelper dbHelper;
-
   DBhelper db = DBhelper();
   int _counter = 0;
-
-  CartProvider(this.dbHelper);
+  CartProvider(this.db);
 
   int get counter => _counter;
-
   double _total = 0.0;
-
   double get total => _total;
-
   late Future<List<Data>> _cart;
-
   Future<List<Data>> get cart => _cart;
-
   Future<List<Data>> getData() async {
     _cart = db.getCartList();
     return _cart;
   }
 
   Future<bool> addToCart(Data data) async {
-    //TODO: Add in DB
-    //TODO : Cart update
-    //TODO : UI notify
+    //Add in DB
+    // Cart update
+    // UI notify
     return false;
   }
 
@@ -44,7 +36,6 @@ class CartProvider with ChangeNotifier {
   void _getPrefItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _counter = prefs.getInt('cart_item') ?? 0;
-    //_total = prefs.getDouble('total') ?? 0.0;
     notifyListeners();
   }
 
@@ -64,21 +55,4 @@ class CartProvider with ChangeNotifier {
     _getPrefItems();
     return _counter;
   }
-
-// void addtotal(double productprice) {
-//   _total += productprice;
-//   _setPrefItems();
-//   notifyListeners();
-// }
-
-// void removetotal(double productprice) {
-//   _total -= productprice;
-//   _setPrefItems();
-//   notifyListeners();
-// }
-
-// double gettotal(double productprice) {
-//   _getPrefItems();
-//   return _total;
-// }
 }

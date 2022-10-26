@@ -280,7 +280,7 @@ class _CartScreenState extends State<CartScreen> {
                     }
                   }
                   ;
-                  return Text("LOADING");
+                  return Center(child: CircularProgressIndicator());
                 })
           ],
         ),
