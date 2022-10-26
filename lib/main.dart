@@ -23,16 +23,11 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-
-  //Creates the mutable state for this widget at a given location in the tree.
-
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  DBhelper? dbHelper = DBhelper();
-  final Api api = new Api();
+  final Api api = Api();
 
   @override
   void initState() {
@@ -46,23 +41,25 @@ class _MyAppState extends State<MyApp> {
     //(TODO): Don't declare global function
 
     return ChangeNotifierProvider(
-      create: (_) => CartProvider(DBhelper()),
+      create: (_) => CartProvider(db: DBhelper()..initDatabase()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'DEMO APP',
         home: FutureBuilder<List<Data>>(
-            future: api.fetchData(),
-            builder: (context, dataSnap) {
-              if (!dataSnap.hasData) {
-                return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()));
-              }
-
-              return MyWidget(
-                data: dataSnap.data ?? [],
-                dbHelper: dbHelper,
+          future: api.fetchData(),
+          builder: (context, dataSnap) {
+            if (!dataSnap.hasData) {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
-            }),
+            }
+            return MyWidget(
+              data: dataSnap.data ?? [],
+            );
+          },
+        ),
       ),
     );
   }

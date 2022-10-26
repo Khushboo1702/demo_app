@@ -1,7 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:demoapp/modules/cart_module/controller/cart_provider.dart';
 import 'package:demoapp/modules/cart_module/data/data.dart';
-import 'package:demoapp/services/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,12 +12,16 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  DBhelper? dBhelper = DBhelper();
+  late CartProvider cart;
+
+  @override
+  void initState() {
+    super.initState();
+    cart = Provider.of<CartProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<CartProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.tealAccent,
@@ -52,181 +55,124 @@ class _CartScreenState extends State<CartScreen> {
         child: Column(
           children: [
             FutureBuilder(
-                future: cart.getData(),
-                builder: (context, AsyncSnapshot<List<Data>> snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.isEmpty) {
-                      return Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            // Image(
-                            //   image: AssetImage('images/empty_cart.png'),
-                            // ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text('Your cart is empty !',
-                                style: Theme.of(context).textTheme.headline5),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                                'Explore products and shop your\nfavourite items',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.subtitle2)
-                          ],
-                        ),
-                      );
-                    } else {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(25.0),
-                                child: Column(
-                                  // mainAxisAlignment: MainAxisAlignment.center,
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.start,
-                                            // crossAxisAlignment:
-                                            //     CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      snapshot
-                                                          .data![index].title
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
+              future: cart.getData(),
+              builder: (context, AsyncSnapshot<List<Data>> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.isEmpty) {
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          // Image(
+                          //   image: AssetImage('images/empty_cart.png'),
+                          // ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text('Your cart is empty !',
+                              style: Theme.of(context).textTheme.headline5),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                              'Explore products and shop your\nfavourite items',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.subtitle2)
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(25.0),
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          // mainAxisAlignment:
+                                          //     MainAxisAlignment.start,
+                                          // crossAxisAlignment:
+                                          //     CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    snapshot.data![index].title
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
-                                                  InkWell(
-                                                      onTap: () {
-                                                        dBhelper!.delete(
-                                                          snapshot
-                                                              .data![index].id,
-                                                        );
-                                                        cart.removeCounter();
-                                                      },
-                                                      child: Icon(Icons.delete))
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: InkWell(
-                                                        onTap: () {},
-                                                        child: Container(
-                                                          height: 35,
-                                                          width: 100,
-                                                          decoration: BoxDecoration(
-                                                              color:
-                                                                  Colors.green,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5)),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Row(
-                                                              children: [
-                                                                InkWell(
-                                                                    onTap: () {
-                                                                      int quantity = snapshot
-                                                                          .data![
-                                                                              index]
-                                                                          .quantity!;
-
-                                                                      quantity--;
-
-                                                                      if (quantity >
-                                                                          0) {
-                                                                        dBhelper!
-                                                                            .updateQuantity(
-                                                                          Data(
-                                                                            id: snapshot.data![index].id,
-                                                                            userId:
-                                                                                snapshot.data![index].userId,
-                                                                            title:
-                                                                                snapshot.data![index].title,
-                                                                            quantity:
-                                                                                quantity,
-                                                                          ),
-                                                                        )
-                                                                            .then(
-                                                                                (value) {
-                                                                          quantity =
-                                                                              0;
-                                                                        }).onError((error,
-                                                                                stackTrace) {
-                                                                          print(
-                                                                              error.toString());
-                                                                        });
-                                                                      }
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .remove,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Text(
-                                                                    snapshot
+                                                ),
+                                                InkWell(
+                                                  onTap: () async {
+                                                    await cart.removeItem(
+                                                      snapshot.data![index],
+                                                    );
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.delete,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: InkWell(
+                                                      onTap: () {},
+                                                      child: Container(
+                                                        height: 35,
+                                                        width: 100,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.green,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            5,
+                                                          ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            children: [
+                                                              InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    int quantity = snapshot
                                                                         .data![
                                                                             index]
-                                                                        .quantity
-                                                                        .toString(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      fontSize:
-                                                                          20,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Expanded(
-                                                                  child: InkWell(
-                                                                      onTap: () {
-                                                                        int quantity = snapshot
-                                                                            .data![index]
-                                                                            .quantity!;
+                                                                        .quantity!;
 
-                                                                        quantity++;
+                                                                    quantity--;
 
-                                                                        dBhelper!
-                                                                            .updateQuantity(
-                                                                                Data(
+                                                                    if (quantity >
+                                                                        0) {
+                                                                      await cart
+                                                                          .updateItem(
+                                                                        Data(
                                                                           id: snapshot
                                                                               .data![index]
                                                                               .id,
@@ -238,50 +184,103 @@ class _CartScreenState extends State<CartScreen> {
                                                                               .title,
                                                                           quantity:
                                                                               quantity,
-                                                                        ))
-                                                                            .then(
-                                                                                (value) {
-                                                                          quantity =
-                                                                              0;
-                                                                        }).onError((error,
-                                                                                stackTrace) {
-                                                                          print(
-                                                                              error.toString());
-                                                                        });
-                                                                      },
-                                                                      child: Icon(
-                                                                        Icons
-                                                                            .add,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      )),
-                                                                ),
-                                                              ],
-                                                            ),
+                                                                        ),
+                                                                      );
+                                                                      // quantity =
+                                                                      // 0;
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .remove,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Text(
+                                                                  snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .quantity
+                                                                      .toString(),
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    fontSize:
+                                                                        20,
+                                                                  )),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Expanded(
+                                                                child: InkWell(
+                                                                    onTap:
+                                                                        () async {
+                                                                      int quantity = snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .quantity!;
+
+                                                                      quantity++;
+                                                                      await cart
+                                                                          .updateItem(
+                                                                        Data(
+                                                                          id: snapshot
+                                                                              .data![index]
+                                                                              .id,
+                                                                          userId: snapshot
+                                                                              .data![index]
+                                                                              .userId,
+                                                                          title: snapshot
+                                                                              .data![index]
+                                                                              .title,
+                                                                          quantity:
+                                                                              quantity,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    child:
+                                                                        const Icon(
+                                                                      Icons.add,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    )),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                        ),
-                      );
-                    }
+                            ),
+                          );
+                        },
+                      ),
+                    );
                   }
-                  ;
-                  return Center(child: CircularProgressIndicator());
-                })
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            )
           ],
         ),
       ),

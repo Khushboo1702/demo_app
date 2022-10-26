@@ -20,20 +20,26 @@ class DBhelper {
   //   _db = await initDatabase();
   //   return _db;
   // }
+  late Database _dbClient;
 
   DBhelper._();
+
   static DBhelper _db = DBhelper._();
+
   factory DBhelper() {
     return _db;
   }
-  Future<Database?> initDatabase() async {
+
+  //Not required , but still in case you want dbClient
+  Database get dbClient => _dbClient;
+
+  Future<void> initDatabase() async {
     io.Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'cart.db');
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return db;
+    _dbClient = await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
-  _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int version) async {
     await db.execute(
       'CREATE TABLE cart (userId INTEGER, id INTEGER PRIMARY KEY, title TEXT, quantity INTEGER)',
     );
@@ -41,32 +47,23 @@ class DBhelper {
 
   Future<Data> insert(Data cart) async {
     print(cart.toMap());
-
-    var dbClient = await initDatabase();
     //uniqueId++;
-    await dbClient!.insert('cart', cart.toMap());
+    await _dbClient.insert('cart', cart.toMap());
     return cart;
   }
 
   Future<List<Data>> getCartList() async {
-    var dbClient = await db;
     final List<Map<String, Object?>> queryResult =
-        await dbClient!.query('cart');
+        await _dbClient.query('cart');
     return queryResult.map((e) => Data.fromJson(e)).toList();
   }
 
-  Future<int> delete(int id) async {
-    var dbClient = await db;
-    return await dbClient!.delete(
-      'cart',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
+  Future<int> delete(int id) async => _dbClient.delete(
+        'cart',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
 
-  Future<int> updateQuantity(Data cart) async {
-    var dbClient = await db;
-    return await dbClient!
-        .update('cart', cart.toMap(), where: 'id = ?', whereArgs: [cart.id]);
-  }
+  Future<int> updateQuantity(Data cart) async => _dbClient
+      .update('cart', cart.toMap(), where: 'id = ?', whereArgs: [cart.id]);
 }

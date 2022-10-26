@@ -5,15 +5,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 //Acting as a controller here
 class CartProvider with ChangeNotifier {
-  DBhelper db = DBhelper();
+  final DBhelper db;
   int _counter = 0;
-  CartProvider(this.db);
+
+  CartProvider({
+    required this.db,
+  });
 
   int get counter => _counter;
   double _total = 0.0;
+
   double get total => _total;
   late Future<List<Data>> _cart;
+
   Future<List<Data>> get cart => _cart;
+
   Future<List<Data>> getData() async {
     _cart = db.getCartList();
     return _cart;
@@ -54,5 +60,20 @@ class CartProvider with ChangeNotifier {
   int getCounter() {
     _getPrefItems();
     return _counter;
+  }
+
+  Future<void> addItem(Data data) async {
+    await db.insert(data);
+    addCounter();
+  }
+
+  Future<void> removeItem(Data data) async {
+    await db.delete(data.id);
+    removeCounter();
+  }
+
+  Future<void> updateItem(Data data) async {
+    await db.updateQuantity(data);
+    notifyListeners();
   }
 }

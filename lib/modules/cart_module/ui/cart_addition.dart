@@ -4,21 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/data.dart';
-import '../../../services/db_helper.dart';
 import 'cart_screen.dart';
 
 class MyWidget extends StatefulWidget {
   const MyWidget({
     super.key,
     required this.data,
-    required this.dbHelper,
   });
 
 //for UI
   final List<Data> data;
-
-  //for db storage
-  final DBhelper? dbHelper;
 
   @override
   State<MyWidget> createState() => _MyWidgetState();
@@ -76,20 +71,31 @@ class _MyWidgetState extends State<MyWidget> {
                       actions: [
                         TextButton(
                           onPressed: () async {
-                            await widget.dbHelper!.insert(Data(
-                              userId: widget.data[index].userId,
-                              id: index,
-                              title: widget.data[index].title.toString(),
-                              quantity: 1,
-                              //uniqueId: widget.data[index].uniqueId,
-                            ));
-                            context.read<CartProvider>().addCounter();
+                            await context.read<CartProvider>().addItem(
+                                  Data(
+                                    userId: widget.data[index].userId,
+                                    id: index,
+                                    title: widget.data[index].title.toString(),
+                                    quantity: 1,
+                                    //uniqueId: widget.data[index].uniqueId,
+                                  ),
+                                );
                             Navigator.pop(context);
                           },
                           child: const Text("Add To Cart"),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await context.read<CartProvider>().removeItem(
+                                  Data(
+                                    userId: widget.data[index].userId,
+                                    id: index,
+                                    title: widget.data[index].title.toString(),
+                                    quantity: 1,
+                                    //uniqueId: widget.data[index].uniqueId,
+                                  ),
+                                );
+                          },
                           child: const Text("Delete From Cart"),
                         ),
                       ],
@@ -114,14 +120,14 @@ class _MyWidgetState extends State<MyWidget> {
                             // SizedBox(20),
                             RawMaterialButton(
                               onPressed: () async {
-                                await widget.dbHelper!.insert(Data(
-                                  userId: widget.data[index].userId,
-                                  id: index,
-                                  title: widget.data[index].title.toString(),
-                                  quantity: 1,
-                                  //uniqueId: widget.data[index].uniqueId,
-                                ));
-                                context.read<CartProvider>().addCounter();
+                                await context.read<CartProvider>().addItem(Data(
+                                      userId: widget.data[index].userId,
+                                      id: index,
+                                      title:
+                                          widget.data[index].title.toString(),
+                                      quantity: 1,
+                                      //uniqueId: widget.data[index].uniqueId,
+                                    ));
                               },
                               elevation: 2.0,
                               fillColor: Colors.white,
