@@ -41,7 +41,9 @@ class _MyAppState extends State<MyApp> {
     //(TODO): Don't declare global function
 
     return ChangeNotifierProvider(
-      create: (_) => CartProvider(db: DBhelper()..initDatabase()),
+      create: (_) => CartProvider(
+        db: DBhelper()..initDatabase(),
+      ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'DEMO APP',
