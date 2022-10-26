@@ -90,17 +90,11 @@ class _CartScreenState extends State<CartScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(25.0),
                               child: Column(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                // crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       Expanded(
                                         child: Column(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.start,
-                                          // crossAxisAlignment:
-                                          //     CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               mainAxisAlignment:
@@ -122,6 +116,7 @@ class _CartScreenState extends State<CartScreen> {
                                                     await cart.removeItem(
                                                       snapshot.data![index],
                                                     );
+                                                    cart.removeCounter();
                                                   },
                                                   child: const Icon(
                                                     Icons.delete,

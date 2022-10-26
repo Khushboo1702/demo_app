@@ -80,6 +80,7 @@ class _MyWidgetState extends State<MyWidget> {
                                     //uniqueId: widget.data[index].uniqueId,
                                   ),
                                 );
+                            context.read<CartProvider>().addCounter();
                             Navigator.pop(context);
                           },
                           child: const Text("Add To Cart"),
@@ -95,6 +96,8 @@ class _MyWidgetState extends State<MyWidget> {
                                     //uniqueId: widget.data[index].uniqueId,
                                   ),
                                 );
+                            context.read<CartProvider>().removeCounter();
+                            Navigator.pop(context);
                           },
                           child: const Text("Delete From Cart"),
                         ),
@@ -128,6 +131,7 @@ class _MyWidgetState extends State<MyWidget> {
                                       quantity: 1,
                                       //uniqueId: widget.data[index].uniqueId,
                                     ));
+                                context.read<CartProvider>().addCounter();
                               },
                               elevation: 2.0,
                               fillColor: Colors.white,

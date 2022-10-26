@@ -62,14 +62,12 @@ class CartProvider with ChangeNotifier {
     return _counter;
   }
 
-  Future<void> addItem(Data data) async {
-    await db.insert(data);
-    addCounter();
+  Future<Data> addItem(Data data) async {
+    return await db.insert(data);
   }
 
-  Future<void> removeItem(Data data) async {
-    await db.delete(data.id);
-    removeCounter();
+  Future<int> removeItem(Data data) async {
+    return await db.delete(data.id);
   }
 
   Future<void> updateItem(Data data) async {
