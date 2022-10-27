@@ -71,6 +71,7 @@ class _MyWidgetState extends State<MyWidget> {
                       actions: [
                         TextButton(
                           onPressed: () async {
+                            Navigator.pop(context);
                             await context.read<CartProvider>().addItem(
                                   Data(
                                     userId: widget.data[index].userId,
@@ -80,8 +81,8 @@ class _MyWidgetState extends State<MyWidget> {
                                     //uniqueId: widget.data[index].uniqueId,
                                   ),
                                 );
+
                             context.read<CartProvider>().addCounter();
-                            Navigator.pop(context);
                           },
                           child: const Text("Add To Cart"),
                         ),
