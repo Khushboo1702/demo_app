@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:demoapp/modules/cart_module/data/api.dart';
 import 'package:demoapp/modules/cart_module/ui/cart_addition.dart';
 import 'package:demoapp/modules/cart_module/controller/cart_provider.dart';
+import 'package:demoapp/services/sembastDB.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:demoapp/modules/cart_module/data/data.dart';
@@ -28,10 +31,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Api api = Api();
+  late final AppDatabase db1;
 
   @override
   void initState() {
     super.initState();
+    db1 = AppDatabase();
   }
 
   @override
@@ -39,30 +44,36 @@ class _MyAppState extends State<MyApp> {
 
   Widget build(BuildContext context) {
     //(TODO): Don't declare global function
+    // StreamController<double> controller = StreamController<double>();
+    // Stream stream = controller.stream;
 
-    return ChangeNotifierProvider(
-      create: (_) => CartProvider(
-        db: DBhelper()..initDatabase(),
-      ),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'DEMO APP',
-        home: FutureBuilder<List<Data>>(
-          future: api.fetchData(),
-          builder: (context, dataSnap) {
-            if (!dataSnap.hasData) {
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-            return MyWidget(
-              data: dataSnap.data ?? [],
-            );
-          },
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: db1.openDatabase(),
+        builder: (context, snapshot) {
+          return ChangeNotifierProvider(
+            create: (_) => CartProvider(
+              db: db1,
+            ),
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'DEMO APP',
+              home: FutureBuilder<List<Data>>(
+                future: api.fetchData(),
+                builder: (context, dataSnap) {
+                  if (!dataSnap.hasData) {
+                    return const Scaffold(
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  return MyWidget(
+                    data: dataSnap.data ?? [],
+                  );
+                },
+              ),
+            ),
+          );
+        });
   }
 }

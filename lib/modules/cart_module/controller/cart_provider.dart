@@ -1,11 +1,12 @@
 import 'package:demoapp/modules/cart_module/data/data.dart';
 import 'package:demoapp/services/db_helper.dart';
+import 'package:demoapp/services/sembastDB.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Acting as a controller here
 class CartProvider with ChangeNotifier {
-  final DBhelper db;
+  final AppDatabase db;
   int _counter = 0;
 
   CartProvider({
