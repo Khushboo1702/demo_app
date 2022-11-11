@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:demoapp/modules/cart_module/bloc/cart_bloc.dart';
 import 'package:demoapp/modules/cart_module/data/api.dart';
 import 'package:demoapp/modules/cart_module/ui/cart_addition.dart';
 import 'package:demoapp/modules/cart_module/controller/cart_provider.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final Api api = Api();
   late final AppDatabase db1;
-
+  CartBloc bloc = CartBloc();
   @override
   void initState() {
     super.initState();
@@ -50,28 +51,24 @@ class _MyAppState extends State<MyApp> {
     return FutureBuilder(
         future: db1.openDatabase(),
         builder: (context, snapshot) {
-          return ChangeNotifierProvider(
-            create: (_) => CartProvider(
-              db: db1,
-            ),
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'DEMO APP',
-              home: FutureBuilder<List<Data>>(
-                future: api.fetchData(),
-                builder: (context, dataSnap) {
-                  if (!dataSnap.hasData) {
-                    return const Scaffold(
-                      body: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  return MyWidget(
-                    data: dataSnap.data ?? [],
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'DEMO APP',
+            home: FutureBuilder<List<Data>>(
+              future: api.fetchData(),
+              builder: (context, dataSnap) {
+                if (!dataSnap.hasData) {
+                  return const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
-                },
-              ),
+                }
+                return MyWidget(
+                  data: dataSnap.data ?? [],
+                  bloc: bloc,
+                );
+              },
             ),
           );
         });

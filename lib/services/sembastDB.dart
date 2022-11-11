@@ -47,18 +47,21 @@ class AppDatabase {
   //Future<Database> get _db async => await AppDatabase.instance.database;
 
   Future<Data> insert(Data cart) async {
-    await _cartFolder.add(await _dbClient, cart.toMap());
+    await _cartFolder.add(_dbClient, cart.toMap());
     return cart;
   }
 
   Future updateQuantity(Data cart) async {
     final finder = Finder(filter: Filter.byKey(cart.id));
-    await _cartFolder.update(await _dbClient, cart.toMap(), finder: finder);
+    return _cartFolder.update(_dbClient, cart.toMap(), finder: finder);
   }
 
   Future delete(int id) async {
     final finder = Finder(filter: Filter.byKey(id));
-    await _cartFolder.delete(await _dbClient, finder: finder);
+    print(finder);
+    final identity = await _cartFolder.delete(_dbClient, finder: finder);
+
+    return identity;
   }
 
   Future<List<Data>> getCartList() async {
