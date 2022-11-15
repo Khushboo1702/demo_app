@@ -231,7 +231,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                           .data![
                                                                               index]
                                                                           .quantity!;
-
+                                                                      print(
+                                                                          quantity);
                                                                       quantity++;
                                                                       await widget
                                                                           .bloc
