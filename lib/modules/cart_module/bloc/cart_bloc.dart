@@ -17,13 +17,13 @@ class CartBloc {
 
   void plus() {
     var value = _subject.value;
-    print(value);
+    //print(value);
     _subject.add(++value);
   }
 
   void del() {
     var temp = _subject.value;
-    print(temp);
+    //print(temp);
     _subject.add(--temp);
   }
 
@@ -53,7 +53,9 @@ class CartBloc {
   }
 
 //TODO: NEEDS TO BE COMPLETED
-  Future<void> updateItem(Data data) async {}
+  Future<void> updateItem(Data data) async {
+    // repo.updateItem(data);
+  }
 
   Future<void> getData() async {
     final response3 = await repo.getData();

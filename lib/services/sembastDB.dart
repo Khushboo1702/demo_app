@@ -58,16 +58,16 @@ class AppDatabase {
   }
 
   Future updateQuantity(Data cart) async {
-    final finder = Finder(filter: Filter.byKey(cart.id));
+    final finder = Finder(filter: Filter.equals('id', cart.id));
     return _cartFolder.update(_dbClient, cart.toMap(), finder: finder);
   }
 
   Future delete(int id) async {
-    final finder = Finder(filter: Filter.byKey(id));
+    final finder = Finder(filter: Filter.equals('id', id));
     print(finder);
     final identity = await _cartFolder.delete(_dbClient, finder: finder);
-
-    return identity;
+    //print(identity);
+    return finder;
   }
 
   Future<List<Data>> getCartList() async {
