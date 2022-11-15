@@ -128,7 +128,7 @@ class _MyWidgetState extends State<MyWidget> {
                                   );
 
                                   // context.read<CartProvider>().addCounter();
-                                  widget.bloc.plus();
+                                  //widget.bloc.plus();
                                 },
                                 child: const Text("Add To Cart"),
                               ),
@@ -182,7 +182,7 @@ class _MyWidgetState extends State<MyWidget> {
                                         quantity: 1,
                                         //uniqueId: widget.data[index].uniqueId,
                                       ));
-                                      widget.bloc.plus();
+                                      //widget.bloc.plus();
                                     },
                                     elevation: 2.0,
                                     fillColor: Colors.white,

@@ -66,6 +66,6 @@ import 'package:demoapp/modules/cart_module/data/data.dart';
 //         whereArgs: [id],
 //       );
 
-//   Future<int> updateQuantity(Data cart) async => _dbClient
+//   Future<int> updateQuantity(Data cart)async => _dbClient
 //       .update('cart', cart.toMap(), where: 'id = ?', whereArgs: [cart.id]);
 // }

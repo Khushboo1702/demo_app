@@ -33,6 +33,7 @@ class CartBloc {
     if (await repo.containsData(data)) {
       return;
     }
+    plus();
     List<Data> list = _ListSubject.valueOrNull ?? [];
     final response = await repo.addItem(data);
     _ListSubject.add([...list, response]);
