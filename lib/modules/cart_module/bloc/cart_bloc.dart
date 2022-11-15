@@ -30,6 +30,9 @@ class CartBloc {
   ValueStream<List<Data>> get addProductToStream => _ListSubject.stream;
 
   Future<void> addItem(Data data) async {
+    if (await repo.containsData(data)) {
+      return;
+    }
     List<Data> list = _ListSubject.valueOrNull ?? [];
     final response = await repo.addItem(data);
     _ListSubject.add([...list, response]);

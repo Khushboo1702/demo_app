@@ -51,6 +51,12 @@ class AppDatabase {
     return cart;
   }
 
+  Future<bool> containsData(Data cart) async {
+    final finder = Finder(filter: Filter.equals('id', cart.id));
+    final data = await _cartFolder.findFirst(_dbClient, finder: finder);
+    return data != null;
+  }
+
   Future updateQuantity(Data cart) async {
     final finder = Finder(filter: Filter.byKey(cart.id));
     return _cartFolder.update(_dbClient, cart.toMap(), finder: finder);

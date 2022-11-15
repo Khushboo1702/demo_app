@@ -19,4 +19,6 @@ class CartRepo {
   Future<void> updateItem(Data data) async {
     await db.updateQuantity(data);
   }
+
+  Future<bool> containsData(Data data) => db.containsData(data);
 }
