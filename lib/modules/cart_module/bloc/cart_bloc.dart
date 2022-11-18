@@ -52,9 +52,20 @@ class CartBloc {
     _ListSubject.add(list2);
   }
 
-//TODO: NEEDS TO BE COMPLETED
+  Future<void> removeFromStream(Data data) async {
+    List<Data> list = _ListSubject.value;
+    list.remove(data);
+    _ListSubject.add(list);
+  }
+
   Future<void> updateItem(Data data) async {
-    // repo.updateItem(data);
+    ///print(data.quantity);
+    final response = await repo.updateItem(data);
+    //removeItem(data);
+
+    List<Data> l = _ListSubject.value;
+    l.add(response);
+    _ListSubject.add(l);
   }
 
   Future<void> getData() async {
