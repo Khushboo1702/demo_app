@@ -19,6 +19,7 @@ class _CartScreenState extends State<CartScreen> {
     // TODO: implement initState
     super.initState();
     widget.bloc.getData();
+    // widget.bloc.updateItem();
   }
 
   @override
@@ -190,6 +191,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                               quantity,
                                                                         ),
                                                                       );
+                                                                      // setState(
+                                                                      //     () {});
                                                                       // quantity =
                                                                       // 0;
                                                                     }
@@ -231,9 +234,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                           .data![
                                                                               index]
                                                                           .quantity!;
-                                                                      print(
-                                                                          quantity);
+
                                                                       quantity++;
+
                                                                       await widget
                                                                           .bloc
                                                                           .updateItem(
@@ -251,6 +254,8 @@ class _CartScreenState extends State<CartScreen> {
                                                                               quantity,
                                                                         ),
                                                                       );
+                                                                      // setState(
+                                                                      //     () {});
                                                                     },
                                                                     child:
                                                                         const Icon(

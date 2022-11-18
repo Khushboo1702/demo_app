@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class Data {
   final int userId;
-  final int id;
+  late final int id;
   final String title;
   final int? quantity;
 
